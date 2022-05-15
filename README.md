@@ -5,10 +5,11 @@
 3. Run `testSolver(word)` to check how many attempts the bot will take.
 4. Run `runSolver()` to simulate a game.
 
+You can change `debug_mode` in `config.py`.
+
 | `debug_mode` | meaning        |
 | ------------ | -------------- |
 | 0            | minimal output |
 | 1            | verbose output |
 
-Change `debug_mode` from config.py to 0 (no info print), or 1 (additional info print)\
-Change `dictionary_mode` to `True` in the solver to see the dictionary meaning of the word (if the word exists in the [Dictionary API](https://dictionaryapi.dev/)).
+Change `dictionary_mode` to `True` in the solver to see the dictionary meaning of the word if the word exists in the [Dictionary API](https://dictionaryapi.dev/).
