@@ -1,7 +1,7 @@
 import requests
 
 # sample response to request to the api endpoint
-'''
+"""
 [
    {
       "word":"chaos",
@@ -67,14 +67,15 @@ import requests
       ]
    }
 ]
-'''
+"""
 
 # def __get_items
+
 
 class DictionaryAPI:
     def __init__(self):
         self.API_ENDPOINT = "https://api.dictionaryapi.dev/api/v2/entries/en/"
-    
+
     def __flatten_2d_list(self, list_2d: list) -> list:
         """
         Flattens a 2d list to a 1d list
@@ -89,9 +90,11 @@ class DictionaryAPI:
         for item in container:
             if item_type not in item:
                 item[item_type] = "N/A"
-        return list(map(lambda item: item[str(item_type)] , container))
+        return list(map(lambda item: item[str(item_type)], container))
 
-    def __add_collections_to_dict(self, dict: dict, item_name: str, container: any) -> list:
+    def __add_collections_to_dict(
+        self, dict: dict, item_name: str, container: any
+    ) -> list:
         """
         Adds the container, a list of items to a dictionary
         """
@@ -99,8 +102,9 @@ class DictionaryAPI:
             container.extend(["N/A"] * (len(dict) - len(container)))
         return list({**dict[i], item_name: container[i]} for i in range(len(dict)))
 
-        
-    def find_meaning(self, word: str, show_examples = True, show_synonyms = False, show_antonyms = False) -> list:
+    def find_meaning(
+        self, word: str, show_examples=True, show_synonyms=False, show_antonyms=False
+    ) -> list:
         """
         Find the meaning, examples, synonyms and antonyms of a word
         :param word: word to find the meaning of
@@ -115,33 +119,41 @@ class DictionaryAPI:
             definitions = self.__get_items("definitions", all_meanings)
             # definitions is a 2d list, make it 1d
             definitions = self.__flatten_2d_list(definitions)
-            word_meaning = list(map(lambda defn: {"defn":defn["definition"]}, definitions))
+            word_meaning = list(
+                map(lambda defn: {"defn": defn["definition"]}, definitions)
+            )
 
             if show_examples:
                 examples = self.__get_items("example", definitions)
                 # unpack the dictionary word_meaning and add examples
-                word_meaning = self.__add_collections_to_dict(word_meaning, "exmpls", examples)
+                word_meaning = self.__add_collections_to_dict(
+                    word_meaning, "exmpls", examples
+                )
 
             if show_synonyms:
                 synonyms = self.__get_items("synonyms", definitions)
-                # unpack the dictionary word_meaning and add synonyms 
-                word_meaning = self.__add_collections_to_dict(word_meaning, "synms", synonyms)
+                # unpack the dictionary word_meaning and add synonyms
+                word_meaning = self.__add_collections_to_dict(
+                    word_meaning, "synms", synonyms
+                )
 
             if show_antonyms:
                 antonyms = self.__get_items("antonyms", definitions)
-                # unpack the dictionary word_meaning and add antonyms 
-                word_meaning = self.__add_collections_to_dict(word_meaning, "antms", antonyms)
+                # unpack the dictionary word_meaning and add antonyms
+                word_meaning = self.__add_collections_to_dict(
+                    word_meaning, "antms", antonyms
+                )
 
             return word_meaning
-                
+
         else:
             # print("Word not found")
             return None
 
+
 if __name__ == "__main__":
     myDict = DictionaryAPI()
     word = "tacit"
-    meanings = myDict.find_meaning(word, show_synonyms = True, show_antonyms=True)
+    meanings = myDict.find_meaning(word, show_synonyms=True, show_antonyms=True)
     for meaning in meanings:
         print(meaning)
-    
